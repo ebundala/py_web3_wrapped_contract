@@ -1,7 +1,7 @@
 # ------------------------------------------------------------ Imports ----------------------------------------------------------- #
 
 # System
-from typing import List
+from typing import List, Optional
 
 # Pip
 from web3 import Web3, eth as Eth
@@ -60,12 +60,16 @@ class WrappedContract:
         self,
         account: LocalAccount,
         function: ContractFunction,
-        wei: int
+        wei: Optional[int] = None
     ) -> str:
-        txn = function.buildTransaction({
-            'value': wei,
+        transaction_data = {
             'nonce': self.eth.getTransactionCount(account.address)
-        })
+        }
+
+        if wei:
+            transaction_data['value'] = wei
+
+        txn = function.buildTransaction(transaction_data)
         signed_txn = account.sign_transaction(txn)        
 
         return self.eth.sendRawTransaction(signed_txn.rawTransaction).hex()
