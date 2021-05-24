@@ -22,7 +22,8 @@ class WrappedContract:
         self,
         eth: Eth,
         address: str,
-        abi: List[dict]
+        abi: List[dict],
+        account: Optional[LocalAccount] = None
     ):
         self.__eth = eth
         self.__address = address
@@ -32,6 +33,8 @@ class WrappedContract:
             address=Web3.toChecksumAddress(address),
             abi=abi
         )
+
+        self._account = account
 
 
     # --------------------------------------------------- Public properties -------------------------------------------------- #
@@ -58,10 +61,15 @@ class WrappedContract:
     
     def send_transaction(
         self,
-        account: LocalAccount,
         function: ContractFunction,
-        wei: Optional[int] = None
+        wei: Optional[int] = None,
+        account: Optional[LocalAccount] = None
     ) -> str:
+        account = account or self._account
+
+        if not account:
+            raise('No account to call transaction function with.')
+
         transaction_data = {
             'nonce': self.eth.getTransactionCount(account.address)
         }
