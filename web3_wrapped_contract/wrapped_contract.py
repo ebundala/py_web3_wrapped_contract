@@ -6,10 +6,12 @@ from typing import List, Optional
 # Pip
 from web3 import Web3
 from web3.eth import Eth
-from web3._utils.abi import abi_to_signature
 
 from web3.contract import ContractFunction, ContractFunctions, Contract as EthContract
 from eth_account.signers.local import LocalAccount
+
+# Local
+from .contract_utils import method_signature
 
 # -------------------------------------------------------------------------------------------------------------------------------- #
 
@@ -65,11 +67,9 @@ class WrappedContract:
 
     # ---------------------------------------------------- Public methods ---------------------------------------------------- #
 
-    def method_signature(
-        self,
-        method: ContractFunction
-    ) -> str:
-        return abi_to_signature(method.abi)
+    @staticmethod
+    def method_signature(method: ContractFunction) -> str:
+        return method_signature(method)
 
     def send_transaction(
         self,
