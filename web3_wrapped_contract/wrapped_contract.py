@@ -71,12 +71,12 @@ class WrappedContract:
     def method_signature(method: ContractFunction) -> str:
         return method_signature(method)
 
-    def send_transaction(
+    def raw_transaction(
         self,
         function: ContractFunction,
         wei: Optional[int] = None,
         account: Optional[LocalAccount] = None
-    ) -> str:
+    ):
         account = account or self._account
 
         if not account:
@@ -90,9 +90,22 @@ class WrappedContract:
             transaction_data['value'] = wei
 
         txn = function.buildTransaction(transaction_data)
-        signed_txn = account.sign_transaction(txn)
 
-        return self.eth.sendRawTransaction(signed_txn.rawTransaction).hex()
+        return account.sign_transaction(txn)
+
+    def send_transaction(
+        self,
+        function: ContractFunction,
+        wei: Optional[int] = None,
+        account: Optional[LocalAccount] = None
+    ) -> str:
+        return self.eth.sendRawTransaction(
+            self.raw_transaction(
+                function=function,
+                wei=wei,
+                account=account
+            )
+        ).hex()
 
 
 # -------------------------------------------------------------------------------------------------------------------------------- #
