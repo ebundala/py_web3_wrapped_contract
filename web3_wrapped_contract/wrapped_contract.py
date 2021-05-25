@@ -6,6 +6,7 @@ from typing import List, Optional
 # Pip
 from web3 import Web3
 from web3.eth import Eth
+from web3._utils.abi import abi_to_signature
 
 from web3.contract import ContractFunction, ContractFunctions, Contract as EthContract
 from eth_account.signers.local import LocalAccount
@@ -60,7 +61,16 @@ class WrappedContract:
     @property
     def functions(self) -> ContractFunctions:
         return self.__contract.functions
-    
+
+
+    # ---------------------------------------------------- Public methods ---------------------------------------------------- #
+
+    def method_signature(
+        self,
+        method: ContractFunction
+    ) -> str:
+        return abi_to_signature(method.abi)
+
     def send_transaction(
         self,
         function: ContractFunction,
@@ -80,7 +90,7 @@ class WrappedContract:
             transaction_data['value'] = wei
 
         txn = function.buildTransaction(transaction_data)
-        signed_txn = account.sign_transaction(txn)        
+        signed_txn = account.sign_transaction(txn)
 
         return self.eth.sendRawTransaction(signed_txn.rawTransaction).hex()
 
