@@ -91,7 +91,7 @@ class WrappedContract:
 
         txn = function.buildTransaction(transaction_data)
 
-        return account.sign_transaction(txn)
+        return account.sign_transaction(txn).rawTransaction
 
     def send_transaction(
         self,
