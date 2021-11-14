@@ -10,7 +10,7 @@ else:
 
 setuptools.setup(
     name='web3_wrapped_contract',
-    version='0.0.10',
+    version='0.0.11',
     author='Kristóf-Attila Kovács',
     description='web3_wrapped_contract',
     long_description=long_description,
@@ -18,8 +18,8 @@ setuptools.setup(
     url='https://github.com/kkristof200/py_web3_wrapped_contract',
     packages=setuptools.find_packages(),
     install_requires=[
-        'eth-account>=0.5.4',
-        'web3>=5.18.0'
+        'eth-account>=0.5.5',
+        'web3>=5.23.1'
     ],
     classifiers=[
         'Programming Language :: Python :: 3.4',

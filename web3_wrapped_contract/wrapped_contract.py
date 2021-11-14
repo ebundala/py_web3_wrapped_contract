@@ -75,6 +75,7 @@ class WrappedContract:
         self,
         function: ContractFunction,
         wei: Optional[int] = None,
+        gas: Optional[int] = None,
         account: Optional[LocalAccount] = None
     ):
         account = account or self._account
@@ -89,6 +90,9 @@ class WrappedContract:
         if wei:
             transaction_data['value'] = wei
 
+        if gas:
+            transaction_data['gas'] = gas
+
         txn = function.buildTransaction(transaction_data)
 
         return account.sign_transaction(txn).rawTransaction
@@ -97,12 +101,14 @@ class WrappedContract:
         self,
         function: ContractFunction,
         wei: Optional[int] = None,
+        gas: Optional[int] = None,
         account: Optional[LocalAccount] = None
     ) -> str:
         return self.eth.sendRawTransaction(
             self.raw_transaction(
                 function=function,
                 wei=wei,
+                gas=gas,
                 account=account
             )
         ).hex()
