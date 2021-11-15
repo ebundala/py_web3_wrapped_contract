@@ -95,7 +95,7 @@ class WrappedContract:
             'value': wei
         }
 
-        txn = function.buildTransaction(transaction_data)
+        txn = function.buildTransaction({k:v for k, v in transaction_data.items() if v is not None})
 
         return account.sign_transaction(txn).rawTransaction
 

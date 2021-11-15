@@ -10,7 +10,7 @@ else:
 
 setuptools.setup(
     name='web3_wrapped_contract',
-    version='0.0.13',
+    version='0.0.14',
     author='Kristóf-Attila Kovács',
     description='web3_wrapped_contract',
     long_description=long_description,
