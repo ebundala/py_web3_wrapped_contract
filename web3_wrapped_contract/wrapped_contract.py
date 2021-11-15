@@ -76,6 +76,9 @@ class WrappedContract:
         function: ContractFunction,
         wei: Optional[int] = None,
         gas: Optional[int] = None,
+        gas_price: Optional[int] = None,
+        max_fee_per_gas: Optional[int] = None,
+        max_priority_fee_per_gas: Optional[int] = None,
         account: Optional[LocalAccount] = None
     ):
         account = account or self._account
@@ -84,14 +87,13 @@ class WrappedContract:
             raise('No account to call transaction function with.')
 
         transaction_data = {
-            'nonce': self.eth.getTransactionCount(account.address)
+            'nonce': self.eth.getTransactionCount(account.address),
+            'gas': gas,
+            'gasPrice': gas_price,
+            'maxFeePerGas': max_fee_per_gas,
+            'maxPriorityFeePerGas': max_priority_fee_per_gas,
+            'value': wei
         }
-
-        if wei:
-            transaction_data['value'] = wei
-
-        if gas:
-            transaction_data['gas'] = gas
 
         txn = function.buildTransaction(transaction_data)
 
@@ -102,6 +104,9 @@ class WrappedContract:
         function: ContractFunction,
         wei: Optional[int] = None,
         gas: Optional[int] = None,
+        gas_price: Optional[int] = None,
+        max_fee_per_gas: Optional[int] = None,
+        max_priority_fee_per_gas: Optional[int] = None,
         account: Optional[LocalAccount] = None
     ) -> str:
         return self.eth.sendRawTransaction(
@@ -109,6 +114,9 @@ class WrappedContract:
                 function=function,
                 wei=wei,
                 gas=gas,
+                gas_price=gas_price,
+                max_fee_per_gas=max_fee_per_gas,
+                max_priority_fee_per_gas=max_priority_fee_per_gas,
                 account=account
             )
         ).hex()
