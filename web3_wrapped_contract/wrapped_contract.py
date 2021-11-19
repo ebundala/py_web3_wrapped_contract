@@ -7,7 +7,7 @@ from typing import List, Optional
 from web3 import Web3
 from web3.eth import Eth
 
-from web3.contract import ContractFunction, ContractFunctions, Contract as EthContract
+from web3.contract import ContractEvents, ContractFunction, ContractFunctions, Contract as EthContract
 from eth_account.signers.local import LocalAccount
 
 # Local
@@ -63,6 +63,10 @@ class WrappedContract:
     @property
     def functions(self) -> ContractFunctions:
         return self.__contract.functions
+
+    @property
+    def events(self) -> ContractEvents:
+        return self.__contract.events
 
 
     # ---------------------------------------------------- Public methods ---------------------------------------------------- #
