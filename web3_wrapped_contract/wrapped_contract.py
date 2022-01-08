@@ -12,6 +12,7 @@ from eth_account.signers.local import LocalAccount
 
 # Local
 from .contract_utils import method_signature
+from .no_account_exception import NoAccountException
 
 # -------------------------------------------------------------------------------------------------------------------------------- #
 
@@ -88,7 +89,10 @@ class WrappedContract:
         account = account or self._account
 
         if not account:
-            raise('No account to call transaction function with.')
+            raise NoAccountException(
+                contract_address=function.address,
+                function_name=function.fn_name
+            )
 
         transaction_data = {
             'nonce': self.eth.getTransactionCount(account.address),
