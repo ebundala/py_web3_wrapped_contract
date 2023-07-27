@@ -2,7 +2,7 @@
 
 # Pip
 from web3._utils.abi import normalize_event_input_types, abi_to_signature
-from web3.contract import ContractFunction
+from web3.contract.contract import ContractFunction
 
 # -------------------------------------------------------------------------------------------------------------------------------- #
 
